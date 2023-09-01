@@ -1,12 +1,12 @@
 import React from 'react';
 
-// import Chart from 'tui-chart'; // tui-chart의 모듈을 가져옴
-// import 'tui-chart/dist/tui-chart.css';
-import { PieChart } from '@toast-ui/chart';
+ import Chart from 'tui-chart'; // tui-chart의 모듈을 가져옴
+ import 'tui-chart/dist/tui-chart.css';
+//import { PieChart } from '@toast-ui/chart';
 
 class PieChartComponent extends React.Component {
     componentDidMount() {
-        const el = document.getElementById('chart-area'); // 차트를 렌더링할 DOM 요소 선택
+        const container = document.getElementById('chart-area'); // 차트를 렌더링할 DOM 요소 선택
         const data = {
             categories: ['총 프로젝트 현황'],
             series: [
@@ -40,12 +40,12 @@ class PieChartComponent extends React.Component {
                         visible: true,
                         anchor: 'outer',
                     },
-                    
+                    anchor:'center',
                 },
             },
         };
 
-        const chart = new PieChart({el, data, options});
+        const chart = new Chart.pieChart(container, data, options); // tui-chart 인스턴스 생성
     }
 
     render() {

@@ -27,6 +27,7 @@ import NoticeWrite from "./adminMAin/NoticeWrite";
 import UserInQuryWrite from "./userMain/UserInQuryWrite";
 import UserInQuryDetail from "./userMain/UserInQuryDetail";
 import MainAdmin from "./adminMAin/MainAdmin";
+import ProjectDetail from "./adminMAin/ProjectDetail";
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
 
                 <Route path='/admin' element={<MainAdmin/>} />
                 <Route path='/admin/noticeWrite' element={<NoticeWrite />} />
+                <Route path='/admin/projectdetail' element={< ProjectDetail/>} />
             </Route>
 
 
