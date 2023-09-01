@@ -9,7 +9,7 @@ class ChartComponent1 extends React.Component {
       const data = {
         categories: ['A프로젝트', 'B프로젝트', 'C프로젝트', 'D프로젝트'],
         series: [
-          {
+          { 
             name: '정기점검',
             data: [10, 7, 8, 6],
           },
