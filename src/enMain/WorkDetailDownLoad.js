@@ -6,9 +6,9 @@ import "../userMain/User.css";
 import axios from "axios";
 
 function WorkDetailDownLoad(props) {
-  
-  console.log(props.state.list[0].work_filenum);
-  
+
+const {eachData} = props;
+console.log(eachData);  
   
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -43,11 +43,12 @@ function WorkDetailDownLoad(props) {
 
   
   const getFiles = async () => {
-    
-    const work_filenum = props.state.list[0].work_filenum;
+
+    const work_filenum = eachData.work_filenum;
     console.log(work_filenum);
-  
+     
     const response = await axios.get(`/api/main/getFiles?work_filenum=${work_filenum}`)
+    
     if (response.data === '파일 없음') {
       return;
     } else {
@@ -103,13 +104,11 @@ function WorkDetailDownLoad(props) {
                 {file && file.map((file, index) => (
 
                   <tr key={file.file_id}>
-                      <td>{file.file_name}</td>
+                      <td>{index+1}</td>
                       <td>{file.upload_date}</td>
                       <td>{file.user_id}</td>
                       <td>
-                      {file.file_name != null ? <button onClick={() => down(index)} className="fileDown" style={{ color: 'black' }}>{file.file_name}</button> : <button>파일이 없습니다</button>
-
-}
+                      {file.file_name != null ? <button onClick={() => down(index)} className="fileDown" style={{ color: 'black' }}>{file.file_name}</button> : <button>파일이 없습니다</button>}
                       </td>
                     </tr>
                     ))} 
