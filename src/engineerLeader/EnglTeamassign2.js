@@ -12,8 +12,18 @@ function EnglTeamassign2(props) {
   const pro_id = props.pro_id;
   const server_id = props.server_id;
   const leader_id = props.leader_id;
+  const insRequest_num = props.insRequest_num;
+  const insRequest_type = props.insRequest_type;
 
- 
+
+  const [pro_startdate, setPro_startdate] = useState();
+
+  //프로젝트 정보 저장
+  const handleChangePro = (e) => {
+    setPro_startdate({
+      [e.target.name]: e.target.value,
+    });
+  };
 
 
   useEffect(() => {
@@ -22,15 +32,13 @@ function EnglTeamassign2(props) {
 
       axios.get('http://13.124.230.133:8888/api/main/engleader/getTeamEngList2',{
          params: {
-          leader_id: props.leader_id,
+          leader_id: leader_id,
           pro_pi: pro_pi
         }
       })
 
         .then(response => {
-
           setData(response.data);
-
         })
         .catch((error) => {
           // 요청에 대한 오류 처리를 수행합니다.
@@ -81,14 +89,15 @@ function EnglTeamassign2(props) {
     var eng_enid = checkedEng.previousElementSibling.value;
 
 
-    axios.post('http://13.124.230.133:8888/api/main/engleader/assignEng', { eng_enid: eng_enid, pro_id: pro_id, server_id: server_id })
+    axios.post('http://13.124.230.133:8888/api/main/engleader/assignEng2', { eng_enid: eng_enid, pro_id: pro_id, server_id: server_id, 
+                                                  insRequest_num: insRequest_num, pro_startdate: pro_startdate.pro_startdate, 
+                                                  insRequest_type: insRequest_type })
       .then(response => {
 
         console.log(response);
         if (response.data === "ok") {
-            axios.get('http://13.124.230.133:8888/api/main/engleader/updatePro')
           setModalIsOpen(false);
-          const classname = props.server_id;
+          const classname = insRequest_num;
           const btn_change = document.querySelector(
             `[class="${classname}"]`
           ).previousElementSibling;
@@ -101,14 +110,6 @@ function EnglTeamassign2(props) {
       .catch((err) => {
         console.log(err);
       });
-
-    // const engId = '김철수';
-    // const cusId = 'tnwjd5622';
-    // axios.post('/alarm/assignEngineer', { engId: engId, cusId: cusId })
-    //   .then(response => { console.log(response) })
-    //   .catch(err => { console.log('실패' + err) })
-    // alert('배정 완료');
-    // setModalIsOpen(false);
   };
 
   return (
@@ -116,9 +117,7 @@ function EnglTeamassign2(props) {
 
       {props.check === true ? <button type="button" className="assingment-btn ok-bbtn" style={{backgroundColor:'rgb(101 98 98)'}}>팀원배정완료</button> : <button type="button" className="assingment-btn" onClick={()=>setModalIsOpen(true)}>팀원배정</button>}
 
-      <input type="hidden" className={server_id}></input>
-
-      {/* <button type="button" className="assingment-btn" onClick={() => setModalIsOpen(true)}>팀원배정</button> */}
+      <input type="hidden" className={insRequest_num}></input>
 
       <Modal
         isOpen={modalIsOpen}
@@ -129,12 +128,13 @@ function EnglTeamassign2(props) {
           <div className="team-select">
             <table className="team-select-table">
               <thead>
-                <tr>
+                <tr style={{textAlign: 'center'}}>
                   <th scope="col">NO</th>
                   <th scope="col">이름</th>
                   {/* <th scope="col">직급</th>
                   <th scope="col">소속</th> */}
                   <th scope="col">전화번호</th>
+                  <th scope="col">점검날짜</th>
                   <th scope="col">선택</th>
                 </tr>
               </thead>
@@ -142,20 +142,24 @@ function EnglTeamassign2(props) {
                 {data.map((list, key) => (
                   <tr key={key}>
                     <th scope="row">{key + 1}</th>
-               
-                     
-                        <div className="team-member-name">
 
+                        {/* <div className="team-member-name"> */}
                           <td>
                             <Link to={`/engineerleader/engDetail/${list.eng_enid}`}>{list.eng_name}</Link>
                             
                           </td>
+                        {/* </div> */}
 
-                        </div>
-                      
-                    
                     <td>{list.eng_phone}</td>
-
+                    <td>
+                      <input
+                        type="date"
+                        className="form-control"
+                        name="pro_startdate"
+                        value={list.pro_startdate}
+                        onChange={handleChangePro}
+                      />
+                    </td>
                     <td>
                       <input type="hidden" value={list.eng_enid}></input>{" "}
                       <input type="checkbox" className="eng-assign-check" />

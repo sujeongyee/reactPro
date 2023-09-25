@@ -10,7 +10,7 @@ function EnServerDetailModal(props, areaID) {
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [data, setData] = useState([]);
-
+ 
   const printableAreaRef = useRef(null);
 
 
@@ -162,7 +162,8 @@ function EnServerDetailModal(props, areaID) {
                       <td>{workInfo2.work_status}</td>
                       <td>
                         <input type="button" style={{border:'none', backgroundColor:'white', color:'#4949b3'}}/>
-                        <WorkDetailDownLoad state={data}/>
+                        <WorkDetailDownLoad state={data} eachData={data.list[index]}/>
+                        
                       </td>
                     </tr>
                   ))}

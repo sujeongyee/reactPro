@@ -15,7 +15,7 @@ function EnglAllSchedule(props) {
   const [scheList, setScheList] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
+  const [serverList, setServerList] = useState([]);
   const initialCustomStyles = {
     content: {
       width: "250px",
@@ -54,6 +54,7 @@ function EnglAllSchedule(props) {
   const [events, setEvents] = useState([]);
   
   useEffect(() => {
+    console.log(scheList)
     // scheList가 변경될 때 events 업데이트
     const updatedEvents = scheList.map(item => {
       let color = "";
@@ -79,7 +80,8 @@ function EnglAllSchedule(props) {
         pro_id: item.pro_id,
         eng_enid:item.eng_enid,
         eng_name: item.eng_name,
-        eng_phone:item.eng_phone
+        eng_phone:item.eng_phone,
+        sche_num:item.sche_num
       };
     });
   
@@ -88,10 +90,13 @@ function EnglAllSchedule(props) {
 
   
 
-  const handleEventClick = (event) => {
+  const handleEventClick = async(event) => {
     setSelectedEvent(event.event);
     console.log(event.event)
-
+    const sche_num={"sche_num":event.event.extendedProps.sche_num}
+    const response=await axios.post("/api/main/engineer/getScheInfo",sche_num)
+    console.log(response)
+    setServerList(response.data)
     // 모달 스타일 업데이트
     if (event.event.borderColor) {
       const updatedStyles = {
@@ -114,6 +119,7 @@ function EnglAllSchedule(props) {
           <h3 style={{ color: '#746a60' }}>전체 일정 확인</h3>
           <div id="calendar" style={{ height: "800px" }}>
             <FullCalendar
+             displayEventTime={false}
               plugins={[dayGridPlugin]}
               initialView="dayGridMonth"
               events={events}
@@ -121,6 +127,7 @@ function EnglAllSchedule(props) {
             />
             {selectedEvent && (
               <Modal
+             
                 isOpen={modalIsOpen}
                 onRequestClose={() => setModalIsOpen(false)}
                 style={{ ...customStyles, borderTop: `3px solid ${selectedEvent.color}` }}
@@ -128,11 +135,11 @@ function EnglAllSchedule(props) {
                 <div className="sche_modal">
                   <p style={{ fontSize: '15px' }}>작업 종류 : {selectedEvent.title}</p>
                   <p style={{ fontSize: '15px' }}>프로젝트 이름 :
-                    <Link to={`/engineerleader/projectDetail/${selectedEvent.extendedProps.pro_id}`}>
-                      {selectedEvent.extendedProps.pro_name}
+                    <Link to={`/engineerleader/projectDetail/${serverList.pro_id}`}>
+                      {serverList.pro_name}
                     </Link>
                   </p>
-                  <p style={{ fontSize: '14px' }}>서버이름 : {selectedEvent.extendedProps.server_name} </p>
+                  <p style={{ fontSize: '14px' }}>서버이름 : {serverList.server_name} </p>
                   <p>{moment(selectedEvent.start).format("YYYY-MM-DD")} {selectedEvent.end ? `~ ${moment(selectedEvent.end).format("YYYY-MM-DD")}` : ''}</p>
                   <p>{selectedEvent.eng_name}</p>
                   <p>담당엔지니어 : 

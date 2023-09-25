@@ -74,7 +74,7 @@ function formatDate(dateString) {
         <div className="row">
           <div className="col-7 align-self-center" style={{display: "flex"}}>
             <h3 style={{color: '#dd7070', justifyContent: "left", flex: 1}}>
-              서버 정보
+              작업 내역
             </h3>
             <div className="detail_modal_button" style={{justifyContent: "right"}}>
               <input

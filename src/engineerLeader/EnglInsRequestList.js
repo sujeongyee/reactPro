@@ -9,7 +9,7 @@ import Pagination from "react-js-pagination";
 import Loading from '../loding/Loding';
 import './EngLeader.css';
 import EnglTeamassign2 from "./EnglTeamassign2";
-import EnglTeamassign from "./EnglTeamassign";
+
 
 function EnglInsRequestList(props) {
 
@@ -21,7 +21,6 @@ function EnglInsRequestList(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // 페이지당 아이템 수
   
-  console.log("확인: ",props);
   
   useEffect(() => {
     if (props.userId !== null) {
@@ -184,13 +183,15 @@ function EnglInsRequestList(props) {
                               <td style={{textAlign: 'center'}}>{list.insRequest_regdate}</td>
                               <td style={{textAlign: 'center'}}>{list.eng_name}</td>
                               <td>
-                              <EnglTeamassign
-                                leader_id={props.userId}
-                                pro_pi={list.pro_pi}
-                                pro_id={list.pro_id}
-                                server_id={list.server_id}
-                                check={false}
-                              />
+                                <EnglTeamassign2
+                                  insRequest_num={list.insRequest_num}
+                                  insRequest_type={list.insRequest_type}
+                                  leader_id={props.userId}
+                                  pro_pi={list.pro_pi}
+                                  pro_id={list.pro_id}
+                                  server_id={list.server_id}
+                                  check={false}
+                                />
                               </td>
                             </tr>
                           ))}
