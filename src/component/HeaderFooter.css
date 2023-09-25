@@ -565,6 +565,7 @@ border-bottom: 0.1px solid #e1edff;
 
 .alarm-modaal {
   min-width: 165px;
+  max-width: 300px;
   padding: 10px;
 }
 

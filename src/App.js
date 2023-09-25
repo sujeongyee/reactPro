@@ -120,12 +120,12 @@ function App() {
     }
     if (checkPermission().role === "ROLE_USER") {
       const cus_id = checkPermission().sub;
-      const response1 = await axios.get(`/api/main/getInfo?cus_id=${cus_id}`);
+      const response1 = await axios.get(`http://13.124.230.133:8888/api/main/getInfo?cus_id=${cus_id}`);
       setInfo(response1.data);
     }
     if (checkPermission().role === "ROLE_ENGINEER") {
       const eng_id = checkPermission().sub;
-      const response2 = await axios.get(`/api/main/getInfoEng?eng_id=${eng_id}`);
+      const response2 = await axios.get(`http://13.124.230.133:8888/api/main/getInfoEng?eng_id=${eng_id}`);
       setInfo(response2.data);
     }
     if (checkPermission().role === "ROLE_ENGLEADER") {
@@ -271,10 +271,10 @@ function App() {
 
         <Route element={ <HeaderFooterUs checkPermission={checkPermission()} state={info}  userId={userId}/> } >
 
-          <Route path="/user" element={<MainUser state={info} />} />
-          <Route path="/user/list" element={<UserProList checkPermission={checkPermission()} state={info} />} />
-          <Route path="/user/apply" element={<UserApply checkPermission={checkPermission()} state={info} />} />
-          <Route path="/user/inQurylist" element={<UserInQurylist checkPermission={checkPermission()} />} />
+          <Route path="/user" element={<MainUser state={info} userId={userId}/>} />
+          <Route path="/user/list" element={<UserProList checkPermission={checkPermission()} state={info} userId={userId}/>} />
+          <Route path="/user/apply" element={<UserApply checkPermission={checkPermission()} state={info} userId={userId}/>} />
+          <Route path="/user/inQurylist" element={<UserInQurylist checkPermission={checkPermission()}  />} />
           <Route path="/user/inQurywrite" element={<UserInQuryWrite checkPermission={checkPermission()} />} />
           <Route  path="/user/inQuryDetail" element={<UserInQuryDetail checkPermission={checkPermission()} />}/>
           <Route path="/user/annoList" element={<UserAnnoList checkPermission={checkPermission()} />}/>

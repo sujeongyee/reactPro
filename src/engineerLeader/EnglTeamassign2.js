@@ -6,7 +6,7 @@ import "./EngLeader.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-function EnglTeamassign(props) {
+function EnglTeamassign2(props) {
   const [data, setData] = useState([]);
   const pro_pi = props.pro_pi;
   const pro_id = props.pro_id;
@@ -20,7 +20,7 @@ function EnglTeamassign(props) {
     // props.leaderid가 null이 아닌 경우에만 axios.post 요청을 보냅니다.
     if (props.userId !== null) {
 
-      axios.get('http://13.124.230.133:8888/api/main/engleader/getTeamEngList',{
+      axios.get('http://13.124.230.133:8888/api/main/engleader/getTeamEngList2',{
          params: {
           leader_id: props.leader_id,
           pro_pi: pro_pi
@@ -52,7 +52,7 @@ function EnglTeamassign(props) {
       maxHeight: "85%", // Adjust the height as needed
       overflow: "auto", // Enable scrolling if content overflows
       borderRadius: "15px",
-      padding: "30px",
+      padding: "40px",
     },
   };
 
@@ -187,4 +187,4 @@ function EnglTeamassign(props) {
   );
 }
 
-export default EnglTeamassign;
+export default EnglTeamassign2;

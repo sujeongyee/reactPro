@@ -8,6 +8,7 @@ import axios from "axios";
 import Pagination from "react-js-pagination";
 import Loading from '../loding/Loding';
 import './EngLeader.css';
+import EnglTeamassign2 from "./EnglTeamassign2";
 import EnglTeamassign from "./EnglTeamassign";
 
 function EnglInsRequestList(props) {
@@ -24,7 +25,7 @@ function EnglInsRequestList(props) {
   
   useEffect(() => {
     if (props.userId !== null) {
-    axios.get('/api/main/engleader/insRequestList',{
+    axios.get('http://13.124.230.133:8888/api/main/engleader/insRequestList',{
       params : {userId:props.userId}
     })
       .then(response => {

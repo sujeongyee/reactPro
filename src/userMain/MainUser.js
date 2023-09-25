@@ -14,14 +14,14 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { Link } from "react-router-dom";
-
+import Modal from "react-modal"; 
 // Import Swiper styles
 
 
 
 
 
-function MainUser({state}) {
+function MainUser({state,userId}) {
 
     
     SwiperCore.use([EffectCoverflow, Navigation, Pagination]);
@@ -37,7 +37,8 @@ function MainUser({state}) {
     const [maintenance, setMaintenance] = useState([0]);
 
     useEffect(()=>{
-      axios.get(`/api/main/user/${state.cus_id}`).then((response)=>{
+      if(userId!=null){
+      axios.get(`http://13.124.230.133:8888/api/main/user/${userId}`).then((response)=>{
         const data = response.data;
         console.log(data)
         // console.log(data2);
@@ -59,7 +60,8 @@ function MainUser({state}) {
       .catch((error)=>{
         console.log(error)
       })
-    },[state.cus_id]);
+    }
+    },[userId]);
 
     function calculateProgress(startDate, endDate) {
       const start = parseISO(startDate);
@@ -74,10 +76,96 @@ function MainUser({state}) {
 
     console.log(mainProjectList)
 
+    const [modalStates, setModalStates] = useState([]);
+  const [alarmModals, setAlarmModals] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://13.124.230.133:8888/api/main/alarm/getAlarmList", {
+        params: { user_id: userId },
+      })
+      .then((response) => {
+        const d = response.data;
+        setAlarmModals(d);
+        setModalStates(d.map(() => true));
+      });
+  }, [userId]);
+
+  const openModal = (index) => {
+ 
+    const updatedModalStates = [...modalStates];
+    updatedModalStates[index] = true;
+    setModalStates(updatedModalStates);
+  };
+
+  const closeModal = (index) => {
+  
+    const updatedModalStates = [...modalStates];
+    updatedModalStates[index] = false;
+    setModalStates(updatedModalStates);
+  };
+
+  const customModalStyles = {
+    content: {
+      left: '90%',
+      right: 'auto',
+      height:'75px',
+      overflow:'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      borderRadius:'0.5em',
+      fontSize:'11px',
+      color:'black',
+      border:'1px solid #dfaaaa',
+      backgroundColor:'white',
+      width:'180px',
+      marginTop:'20px',
+      padding:'10px',
+      Animation:'move',
+      animationName: 'move',
+      animationDuration: '4s',
+      animationIterationCount: 'infinite',
+      webkitAnimation: 'move 1.5s',
+      
+      // 추가적인 스타일을 여기에 추가할 수 있습니다.
+    },
+  };
+
+
   return (
     <>
 
       <div class="page-wrapper">
+
+        
+ {alarmModals.map((data,index)=>{
+      const dateObject = new Date(data.alarm_date);
+      const formattedDate = `${dateObject.getFullYear()}/${String(dateObject.getMonth() + 1).padStart(2, '0')
+    }/${String(dateObject.getDate()).padStart(2, '0')} ${String(dateObject.getHours()).padStart(2, '0')
+    }:${String(dateObject.getMinutes()).padStart(2, '0')}`;
+      return(
+        <div key={index}>
+       
+        <Modal overlayClassName="alarm-overlay"
+        isOpen={modalStates[index]} 
+        onRequestClose={() => closeModal(index)} 
+        contentLabel="알람 모달"
+        style={{
+          content: {
+            top: `${(index + 1) * 85}px`, 
+            ...customModalStyles.content 
+          }
+        }}
+      >
+        <div className="alarm-modal">
+          <p style={{marginBottom:'5px'}}>{data.alarm_content}</p>
+          <p style={{marginBottom:'5px'}}>{formattedDate}</p>
+        </div>
+        
+        <button onClick={() => closeModal(index)} style={{float:'right'}}>닫기</button>
+      </Modal>
+      </div>
+      )
+    })}
         <div class="container-fluid">
             <h4 class="listTitle text-dark font-weight-medium mb-1">
               프로젝트 진행 현황

@@ -14,10 +14,9 @@ function EnServerDetailModal(props, areaID) {
   const printableAreaRef = useRef(null);
 
 
-
   useEffect(()=>{
     if(modalIsOpen){
-      axios.post('/api/main/engineer/inspectionList2',{serverId:props.serverId})
+      axios.post('http://13.124.230.133:8888/api/main/engineer/inspectionList2',{serverId:props.serverId})
       .then(response => {
         setData(response.data);
         console.log(response.data);
@@ -148,16 +147,14 @@ function EnServerDetailModal(props, areaID) {
                 </tr>
               </thead>
               <thead>
-                {data.list &&
-                  data.list
-                  .filter((workInfo2) => workInfo2.work_status === '점검완료')
+              {data.list && data.list
+                  // .filter(workInfo2 => workInfo2.work_status === '점검완료')
                   .map((workInfo2, index) => (
                     // let formattedDate = new Date(workInfo2.work_date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
-                    
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{workInfo2.work_division}</td>
-                      <td>{props.workDate}</td>
+                      <td>{new Date(workInfo2.work_date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })}</td>
                       <td>{props.engName}</td>
                       <td>{workInfo2.work_cpu}</td>
                       <td>{workInfo2.work_ram}</td>

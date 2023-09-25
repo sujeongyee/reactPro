@@ -5,7 +5,7 @@ import Pagination from "react-js-pagination";
 import SearchIcon from "../engineerLeader/SearchIcon";
 import { Background } from "../loding/Styles";
 
-function UserProList({state}) {
+function UserProList({state,userId}) {
 
   const[proList, setProList] = useState([]);
   //현재 시간 불러오기
@@ -62,7 +62,7 @@ function UserProList({state}) {
   var currentItems = proList.slice(indexOfFirstItem, indexOfLastItem); //list
  
  useEffect(()=>{
-    axios.get(`/api/main/user/list/${state.cus_id}`).then((response)=>{
+    axios.get(`http://13.124.230.133:8888/api/main/user/list/${userId}`).then((response)=>{
       setProList(response.data);
       console.log(response.data);
       console.log('state: ',state);
@@ -80,7 +80,7 @@ function UserProList({state}) {
     .catch((error)=>{
       console.log(error);
     });
-  },[state.cus_id]);
+  },[userId]);
 
 
   return (
