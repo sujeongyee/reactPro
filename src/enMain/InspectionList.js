@@ -197,7 +197,7 @@ function InspectionList({ checkPermission }) {
                         <tr style={{ textAlign: "center", borderBottom: "2px solid #cdcdcd", borderTop: "2px solid #cdcdcd" }}>
                           <th scope="col">번호</th>
                           <th scope="col">서버</th>
-                          <th scope="col">점검종류</th>
+                          <th scope="col" style={{paddingLeft:'20px'}}>점검종류</th>
                           <th scope="col">프로젝트명</th>
                           <th scope="col">점검일자</th>
                           <th scope="col">서버상태</th>
@@ -218,7 +218,7 @@ function InspectionList({ checkPermission }) {
                                 workDate={formatDate(workInfo.work_date)}
                               />
                             </td>
-                            <td>{workInfo.work_division}</td>
+                            <td style={{paddingLeft:'20px'}}>{workInfo.work_division}</td>
                             <td>{workInfo.pro_name}</td>
                             <td>{formatDate(workInfo.work_date)}</td>
                             <td>
