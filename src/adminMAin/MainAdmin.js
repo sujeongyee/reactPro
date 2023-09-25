@@ -8,6 +8,7 @@ import LineChart from "../userMain/LineChart";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Modal from "react-modal";
 
 function MainAdmin() {
   const [newPL, setnewPL] = useState([]);
@@ -21,7 +22,7 @@ function MainAdmin() {
   const [complete, setComplete] = useState([0]);
 
   useEffect(() => {
-    axios.get("/api/main/admin").then((response) => {
+    axios.get("http://13.124.230.133:8888/api/main/admin").then((response) => {
       const data2 = response.data;
       const receivedvo = data2.vo;
       const receivednewPL = data2.newPL;
@@ -53,9 +54,96 @@ function MainAdmin() {
   });
   }, []);
 
+  const [modalStates, setModalStates] = useState([]);
+  const [alarmModals, setAlarmModals] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://13.124.230.133:8888/api/main/alarm/getAlarmList", {
+        params: { user_id: 'cloud200' },
+      })
+      .then((response) => {
+        const d = response.data;
+        setAlarmModals(d);
+        setModalStates(d.map(() => true));
+      });
+  }, []);
+
+  const openModal = (index) => {
+ 
+    const updatedModalStates = [...modalStates];
+    updatedModalStates[index] = true;
+    setModalStates(updatedModalStates);
+  };
+
+  const closeModal = (index) => {
+  
+    const updatedModalStates = [...modalStates];
+    updatedModalStates[index] = false;
+    setModalStates(updatedModalStates);
+  };
+
+  const customModalStyles = {
+    content: {
+      left: '90%',
+      right: 'auto',
+      height:'75px',
+      overflow:'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      borderRadius:'0.5em',
+      fontSize:'11px',
+      color:'black',
+      border:'1px solid #dfaaaa',
+      backgroundColor:'white',
+      width:'180px',
+      marginTop:'20px',
+      padding:'10px',
+      Animation:'move',
+      animationName: 'move',
+      animationDuration: '4s',
+      animationIterationCount: 'infinite',
+      webkitAnimation: 'move 1.5s',
+      
+      // 추가적인 스타일을 여기에 추가할 수 있습니다.
+    },
+  };
+
+
+
   return (
     <>
       <div className="page-wrapper">
+
+      {alarmModals.map((data,index)=>{
+      const dateObject = new Date(data.alarm_date);
+      const formattedDate = `${dateObject.getFullYear()}/${String(dateObject.getMonth() + 1).padStart(2, '0')
+    }/${String(dateObject.getDate()).padStart(2, '0')} ${String(dateObject.getHours()).padStart(2, '0')
+    }:${String(dateObject.getMinutes()).padStart(2, '0')}`;
+      return(
+        <div key={index}>
+       
+        <Modal overlayClassName="alarm-overlay"
+        isOpen={modalStates[index]} 
+        onRequestClose={() => closeModal(index)} 
+        contentLabel="알람 모달"
+        style={{
+          content: {
+            top: `${(index + 1) * 85}px`, 
+            ...customModalStyles.content 
+          }
+        }}
+      >
+        <div className="alarm-modal">
+          <p style={{marginBottom:'5px'}}>{data.alarm_content}</p>
+          <p style={{marginBottom:'5px'}}>{formattedDate}</p>
+        </div>
+        
+        <button onClick={() => closeModal(index)} style={{float:'right'}}>닫기</button>
+      </Modal>
+      </div>
+      )
+    })}
+
         <div className="container-fluid">
           <div className="row">
             <div className="col-sm-6 col-lg-3">

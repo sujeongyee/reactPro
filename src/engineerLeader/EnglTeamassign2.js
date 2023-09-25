@@ -6,7 +6,7 @@ import "./EngLeader.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-function EnglTeamassign(props) {
+function EnglTeamassign2(props) {
   const [data, setData] = useState([]);
   const pro_pi = props.pro_pi;
   const pro_id = props.pro_id;
@@ -25,7 +25,6 @@ function EnglTeamassign(props) {
     });
   };
 
-  console.log('있니?-------------------', pro_startdate);
 
   useEffect(() => {
     // props.leaderid가 null이 아닌 경우에만 axios.post 요청을 보냅니다.
@@ -192,4 +191,4 @@ function EnglTeamassign(props) {
   );
 }
 
-export default EnglTeamassign;
+export default EnglTeamassign2;

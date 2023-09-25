@@ -10,6 +10,7 @@ import Loading from '../loding/Loding';
 import './EngLeader.css';
 import EnglTeamassign2 from "./EnglTeamassign2";
 
+
 function EnglInsRequestList(props) {
 
   const [loading, setLoading] = useState(true);
@@ -23,7 +24,7 @@ function EnglInsRequestList(props) {
   
   useEffect(() => {
     if (props.userId !== null) {
-    axios.get('/api/main/engleader/insRequestList',{
+    axios.get('http://13.124.230.133:8888/api/main/engleader/insRequestList',{
       params : {userId:props.userId}
     })
       .then(response => {
