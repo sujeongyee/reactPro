@@ -101,18 +101,28 @@ console.log(eachData);
                 </tr>
               </thead>
               <thead>
-                {file && file.map((file, index) => (
-
-                  <tr key={file.file_id}>
-                      <td>{index+1}</td>
-                      <td>{file.upload_date}</td>
-                      <td>{file.user_id}</td>
-                      <td>
-                      {file.file_name != null ? <button onClick={() => down(index)} className="fileDown" style={{ color: 'black' }}>{file.file_name}</button> : <button>파일이 없습니다</button>}
-                      </td>
+                {file && file.length > 0 ? (
+                  file.map((file, index) => (
+                      <tr key={file.file_id}>
+                        <td>{index + 1}</td>
+                        <td>{file.upload_date}</td>
+                        <td>{file.user_id}</td>
+                        <td>
+                          {file.file_name != null ? (
+                            <button onClick={() => down(index)} className="fileDown" style={{ color: 'black' }}>
+                              {file.file_name}
+                            </button>
+                          ) : (
+                            "파일이 없습니다"
+                          )}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="4">첨부파일이 없습니다</td>
                     </tr>
-                    ))} 
-            
+                  )}
               </thead>
             </table>
 
