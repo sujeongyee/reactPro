@@ -57,10 +57,10 @@ function HeaderFooterEnl(props) {
   const [firstAlarm, setFirstAlarm] = useState([]);
   const user_id = props.userId;
   const[userId, setUserId] = useState('');
-  const[leaderName, setLeaderName] = useState('');
+  
   useEffect(() => {
     if (user_id !== '') {
-      axios.get('/api/main/alarm/getAlarmList', {
+      axios.get('http://13.124.230.133:8888/api/main/alarm/getAlarmList', {
         params: { user_id: user_id }
       })
       .then(response => {
@@ -71,16 +71,19 @@ function HeaderFooterEnl(props) {
       .catch(err => { alert('에러') })
     }
   }, [user_id]);
-  
+  const[leaderName, setLeaderName] = useState('');
+  const[teamName,setTeamName] = useState('');
   useEffect(() => {
     if (user_id !== '') {
       console.log('실행실행실행',user_id)
-      axios.get('/api/main/engleader/info', {
+      axios.get('http://13.124.230.133:8888/api/main/engleader/info', {
         params: { user_id: user_id }
       })
       .then(response => {
-        const leaderName = response.data.CUS_MANAGET_NAME;
+        const leaderName = response.data.ENG_NAME;
         setLeaderName(leaderName);
+        const teamName = response.data.TEAM_ID;
+        setTeamName(teamName);
       })
       .catch(err => {
         alert('에러' + err)
@@ -94,7 +97,7 @@ function HeaderFooterEnl(props) {
     const click = document.getElementById('allorsome');
     if(click.innerHTML === '모든 알람 보기'){
       if (user_id !== null) {
-        axios.get('/api/main/alarm/getAllAlarm', {
+        axios.get('http://13.124.230.133:8888/api/main/alarm/getAllAlarm', {
           params: {
             user_id: user_id
           }
@@ -119,7 +122,7 @@ function HeaderFooterEnl(props) {
 
     if (event.currentTarget.innerHTML === '안읽음') {
       event.currentTarget.innerHTML = '읽음'
-      axios.post(('/api/main/alarm/changeAlarm'), { alarmNum: alarmNum })
+      axios.post(('http://13.124.230.133:8888/api/main/alarm/changeAlarm'), { alarmNum: alarmNum })
       alert('알람을 확인 했습니다.')
     }
   }
@@ -134,7 +137,7 @@ function HeaderFooterEnl(props) {
           <nav className="navbar top-navbar navbar-expand-lg navbar-light">
             <div className="navbar-header">
               <div className="navbar-brand">
-                <Link to="/engineerleader" style={{ color: 'black' }}>기술지원 2팀 </Link>
+                <Link to="/engineerleader" style={{ color: 'black' }}>{teamName} </Link>
               </div>
             </div>
             <div
@@ -206,13 +209,13 @@ function HeaderFooterEnl(props) {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    <img
+                    {/* <img
                       src="/img/ddu.jpg"
                       alt="user"
                       className="rounded-circle"
                       width="50"
                       height="50"
-                    />
+                    /> */}
 
                     <span className="ms-2 d-none d-lg-inline-block">
                       <span></span>

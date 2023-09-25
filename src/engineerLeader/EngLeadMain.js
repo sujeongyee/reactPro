@@ -28,7 +28,7 @@ function EngLeadMain(props) {
   useEffect(() => {
     // props.userId가 null이 아닌 경우에만 axios 요청을 보냅니다.
     // if (props.userId !== undefined && props.userId != null && props.userId!=='') {
-      axios.get('/api/main/engleader/main',{
+      axios.get('http://13.124.230.133:8888/api/main/engleader/main',{
         params: { userId: props.userId }
       })
         .then(response => {
@@ -76,7 +76,7 @@ function EngLeadMain(props) {
   const [alarmModals, setAlarmModals] = useState([]);
   useEffect(() => {
     axios
-      .get("/api/main/alarm/getAlarmList", {
+      .get("http://13.124.230.133:8888/api/main/alarm/getAlarmList", {
         params: { user_id: props.userId },
       })
       .then((response) => {
@@ -104,6 +104,8 @@ function EngLeadMain(props) {
     content: {
       left: '90%',
       right: 'auto',
+      height:'75px',
+      overflow:'auto',
       bottom: 'auto',
       marginRight: '-50%',
       borderRadius:'0.5em',
@@ -112,7 +114,7 @@ function EngLeadMain(props) {
       border:'1px solid #dfaaaa',
       backgroundColor:'white',
       width:'180px',
-      marginTop:'45px',
+      marginTop:'20px',
       padding:'10px',
       Animation:'move',
       animationName: 'move',
@@ -145,7 +147,7 @@ function EngLeadMain(props) {
         contentLabel="알람 모달"
         style={{
           content: {
-            top: `${(index + 1) * 80}px`, 
+            top: `${(index + 1) * 85}px`, 
             ...customModalStyles.content 
           }
         }}

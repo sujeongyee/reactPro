@@ -46,9 +46,10 @@ console.log(eachData);
 
     const work_filenum = eachData.work_filenum;
     console.log(work_filenum);
-     
-    const response = await axios.get(`/api/main/getFiles?work_filenum=${work_filenum}`)
-    
+  
+    const response = await axios.get(`http://13.124.230.133:8888/api/main/getFiles?work_filenum=${work_filenum}`)
+
+
     if (response.data === '파일 없음') {
       return;
     } else {
