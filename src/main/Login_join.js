@@ -726,11 +726,11 @@ function Login_join(props) {
                             <div className="form sign-in" id="seachId">
                                 <div className="lj_input-group">
                                     <i className='bx bxs-user'></i>
-                                    <input type="text" placeholder="관리자 이름" name='cus_managet_name' value={idIn.cus_managet_name} onChange={eamilInput} />
+                                    <input type="text" placeholder="담당자 이름" name='cus_managet_name' value={idIn.cus_managet_name} onChange={eamilInput} />
                                 </div>
                                 <div className="lj_input-group">
                                     <div className="row">
-                                        <input type="email" className="serEmail" placeholder="관리자 이메일" name='cus_email' value={idIn.cus_email} onChange={eamilInput} />
+                                        <input type="email" className="serEmail" placeholder="담당자 이메일" name='cus_email' value={idIn.cus_email} onChange={eamilInput} />
                                         <button className="emailCheck" onClick={emailCheck}>인증번호 받기</button>
                                     </div>
                                 </div>

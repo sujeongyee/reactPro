@@ -95,18 +95,20 @@ function AdminproModal(props) {
         <div className="detail_modal_container team-check">
           <h2>팀 배정하기</h2>
           <hr />
-          <span>팀 리스트</span>
+          <span style={{justifyContent:'center', alignItems:'center', display:'flex'}}>팀 리스트</span>
           <br />
-          <div>
-            <ul className="ver-menu">
+          <div style={{marginBottom:'20px'}}>
+            <ul className="ver-menu" style={{display:'inline'}}>
               {teamLeader &&
                 teamLeader.map((team) => (
-                  <li
+                  <li 
+                  // style={{display:'inline'}}
                     key={team.team_num}
                     className="ver-mid"
+                    style={{width: '400px', margin: '0 auto'}}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
-                  >
+                     >
                     <input
                       type="checkbox"
                       value={team.team_num}
@@ -115,7 +117,7 @@ function AdminproModal(props) {
                     <span>{team.team_id}</span>
                     <span>팀장 {team.eng_name}</span>
 
-                    <ul
+                    {/* <ul
                       className={`ver-sub ${isSubMenuVisible ? "visible" : ""}`}
                       key={team.team_num}
                     >
@@ -126,7 +128,7 @@ function AdminproModal(props) {
                             <span>{filteredMember.eng_name}</span>
                           </li>
                         ))}
-                    </ul>
+                    </ul> */}
                   </li>
                 ))}
             </ul>
