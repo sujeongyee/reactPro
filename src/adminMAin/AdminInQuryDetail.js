@@ -8,7 +8,7 @@ function AdminInQuryDetail({ checkPermission }) {
     const location = useLocation();
     const [DetailData, setDetailData] = useState(location.state.item)
     const [update, setUpdte] = useState(false);
-    const [answer,setAnswer]=useState(DetailData.cs_answer_yn)
+    const [answer,setAnswer]=useState('Y')
     const [form, setForm] = useState({ //수정 사항
         cs_title: DetailData.cs_title,
         cs_content: DetailData.cs_content,
