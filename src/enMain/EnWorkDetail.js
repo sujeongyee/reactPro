@@ -50,6 +50,7 @@ function EnWorkDetail({ checkPermission }) {
         work_estimate: "",
     });
 
+
     //각 서버별 작업상세내역서 배열로 등록
     const [cpuInputValues, setCpuInputValues] = useState([]);
     const [ramInputValues, setRamInputValues] = useState([]);
@@ -89,6 +90,7 @@ function EnWorkDetail({ checkPermission }) {
 
             default:
                 break;
+
         }
     };
     //이상유무 체크박스
