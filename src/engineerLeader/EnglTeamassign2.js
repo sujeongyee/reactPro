@@ -1,0 +1,195 @@
+import React, { useEffect, useState } from "react";
+import Modal from "react-modal";
+import "../enMain/EnMain.css";
+// import "../enMain/EnTeam.css";
+import "./EngLeader.css";
+import axios from "axios";
+import { Link } from "react-router-dom";
+
+function EnglTeamassign(props) {
+  const [data, setData] = useState([]);
+  const pro_pi = props.pro_pi;
+  const pro_id = props.pro_id;
+  const server_id = props.server_id;
+  const leader_id = props.leader_id;
+  const insRequest_num = props.insRequest_num;
+  const insRequest_type = props.insRequest_type;
+
+
+  const [pro_startdate, setPro_startdate] = useState();
+
+  //프로젝트 정보 저장
+  const handleChangePro = (e) => {
+    setPro_startdate({
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  console.log('있니?-------------------', pro_startdate);
+
+  useEffect(() => {
+    // props.leaderid가 null이 아닌 경우에만 axios.post 요청을 보냅니다.
+    if (props.userId !== null) {
+
+      axios.get('http://13.124.230.133:8888/api/main/engleader/getTeamEngList2',{
+         params: {
+          leader_id: leader_id,
+          pro_pi: pro_pi
+        }
+      })
+
+        .then(response => {
+          setData(response.data);
+        })
+        .catch((error) => {
+          // 요청에 대한 오류 처리를 수행합니다.
+        });
+    }
+  }, [props.userId]);
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const customStyles = {
+    content: {
+      top: "55%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      maxWidth: "100%", // Adjust the width as needed
+      maxHeight: "85%", // Adjust the height as needed
+      overflow: "auto", // Enable scrolling if content overflows
+      borderRadius: "15px",
+      padding: "40px",
+    },
+  };
+
+  const assign = (e) => {
+    const checklist = document.querySelectorAll(".eng-assign-check");
+    let count = 0;
+    let checkedEng = "";
+    for (let i = 0; i < checklist.length; i++) {
+      if (checklist[i].checked) {
+        checkedEng = checklist[i];
+        count++;
+        if (count > 1) {
+          alert("한 서버에는 한명의 엔지니어만 배정이 가능합니다");
+          for (let i = 0; i < checklist.length; i++) {
+            checklist[i].checked = false;
+          }
+          return;
+        }
+      }
+    }
+    if (count === 0) {
+      alert("한명의 엔지니어 선택은 필수입니다.");
+      return;
+    }
+
+    var eng_enid = checkedEng.previousElementSibling.value;
+
+
+    axios.post('http://13.124.230.133:8888/api/main/engleader/assignEng2', { eng_enid: eng_enid, pro_id: pro_id, server_id: server_id, 
+                                                  insRequest_num: insRequest_num, pro_startdate: pro_startdate.pro_startdate, 
+                                                  insRequest_type: insRequest_type })
+      .then(response => {
+
+        console.log(response);
+        if (response.data === "ok") {
+          setModalIsOpen(false);
+          const classname = insRequest_num;
+          const btn_change = document.querySelector(
+            `[class="${classname}"]`
+          ).previousElementSibling;
+          console.log(btn_change);
+          btn_change.style.backgroundColor = "rgb(101 98 98)";
+          btn_change.innerHTML = "팀원배정완료";
+          alert("해당 서버에 팀원을 배정 했습니다");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  return (
+    <>
+
+      {props.check === true ? <button type="button" className="assingment-btn ok-bbtn" style={{backgroundColor:'rgb(101 98 98)'}}>팀원배정완료</button> : <button type="button" className="assingment-btn" onClick={()=>setModalIsOpen(true)}>팀원배정</button>}
+
+      <input type="hidden" className={insRequest_num}></input>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        style={customStyles}
+      >
+        <div className="team-table">
+          <div className="team-select">
+            <table className="team-select-table">
+              <thead>
+                <tr style={{textAlign: 'center'}}>
+                  <th scope="col">NO</th>
+                  <th scope="col">이름</th>
+                  {/* <th scope="col">직급</th>
+                  <th scope="col">소속</th> */}
+                  <th scope="col">전화번호</th>
+                  <th scope="col">점검날짜</th>
+                  <th scope="col">선택</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((list, key) => (
+                  <tr key={key}>
+                    <th scope="row">{key + 1}</th>
+
+                        {/* <div className="team-member-name"> */}
+                          <td>
+                            <Link to={`/engineerleader/engDetail/${list.eng_enid}`}>{list.eng_name}</Link>
+                            
+                          </td>
+                        {/* </div> */}
+
+                    <td>{list.eng_phone}</td>
+                    <td>
+                      <input
+                        type="date"
+                        className="form-control"
+                        name="pro_startdate"
+                        value={list.pro_startdate}
+                        onChange={handleChangePro}
+                      />
+                    </td>
+                    <td>
+                      <input type="hidden" value={list.eng_enid}></input>{" "}
+                      <input type="checkbox" className="eng-assign-check" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="detail_modal_btn btn-assign-zone">
+              <input
+                type="button"
+                value="배정"
+                className="detail_modal_btn_show btn-assign-eng"
+                style={{ backgroundColor: "rgb(44, 117, 70)" }}
+                onClick={assign}
+              />
+              <input
+                type="button"
+                value="취소"
+                className="detail_modal_btn_close btn-assign-eng"
+                style={{ backgroundColor: "rgb(44, 117, 70)" }}
+                onClick={() => setModalIsOpen(false)}
+              />
+            </div>
+          </div>
+        </div>
+      </Modal>
+    </>
+  );
+}
+
+export default EnglTeamassign;

@@ -11,7 +11,6 @@ import SearchIcon from "../engineerLeader/SearchIcon";
 
 function EnL_newProject({ checkPermission }) {
   const eng_enid = checkPermission.sub;
-  const [loading, setLoading] = useState(true);
   const [first, setFirst] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 정보 저장
   const itemsPerPage = 10; // 페이지당 아이템 수

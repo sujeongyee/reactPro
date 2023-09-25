@@ -5,7 +5,7 @@ import FormControlIcon from "../img/FormControlIcon";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import EnServerDetailModal from "./EnServerDetailModal";
-import Pagination from "react-js-pagination";
+import Pagination from "react-js-pagination"
 import Loading from '../loding/Loding';
 import SearchIcon from "../engineerLeader/SearchIcon";
 
@@ -29,25 +29,10 @@ function InspectionList({ checkPermission }) {
   useEffect(() => {
     axios.get(`/api/main/engineer/inspectionList/${eng_enid}`)
       .then((res) => {
-
-        const data = res.data.inspectionList;
-        // 중복을 제거할 필드를 배열에 저장
-        const uniqueFields = ['server_name', 'work_division', 'pro_name', 'work_date', 'server_status', 'work_status'];
-        // 중복 값을 제거한 데이터를 저장할 객체
-        const uniqueData = {}; 
-        // 데이터를 순회하면서 중복을 제거한 데이터 구성
-        data.forEach((workInfo) => {
-          const key = uniqueFields.map((field) => workInfo[field]).join('|');
-          uniqueData[key] = workInfo;
-        });
-        // 중복을 제거한 데이터 객체를 배열로 변환
-        const uniqueList = Object.values(uniqueData);
-
-        setList(uniqueList);
-        setFirst(uniqueList);
+        setList(res.data.inspectionList);
+        setFirst(res.data.inspectionList);
         setLoading(false);
-        console.log(data);
-
+        console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -138,6 +123,7 @@ function InspectionList({ checkPermission }) {
     setCurrentPage(1); // 페이지를 첫 번째 페이지로 리셋
   }; // 검색 끝
 
+
   const indexOfLastItem = currentPage * itemsPerPage; // 마지막 페이지 계산
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   var currentItems = list.slice(indexOfFirstItem, indexOfLastItem);
@@ -156,9 +142,7 @@ function InspectionList({ checkPermission }) {
               <div className="card">
                 <div className="card-body">
                   <div className="searchBox">
-
-                    {/* 검색 필터 및 검색 기능 */}
-                    <select onChange={selectee1} style={{ height: "30px", color: "#9cbba6", position: "absolute", top: '10px', left: "100px", border: "1px solid #9cbba6", borderRadius: "3px", color: "#c5c0c0", fontSize: "13px" }} >
+                    <select onChange={selectee1} style={{ height: "30px", color: "#9cbba6", position: "absolute", top: '10px', left: "100px", border: "1px solid #9cbba6", borderRadius:"3px", color:"#c5c0c0", fontSize: "13px"  }} >
 
                       <option value="전체보기">작업상태</option>
                       <option value="점검예정">점검예정</option>
@@ -166,7 +150,6 @@ function InspectionList({ checkPermission }) {
                       <option value="점검완료">점검완료</option>
 
                     </select>
-
 
                     <form className="search-engineer search-englg" style={{ position: 'absolute', top: '0px', right: '100px', margin: '0 5px' }}>
                       <div className="customize-input right select-proengl" >
@@ -224,9 +207,7 @@ function InspectionList({ checkPermission }) {
                             <td>
                               <button
                                 type="button"
-
-                                className={`btn waves-effect waves-light btn-rounded ${workInfo.server_status === '정상작동중' ? 'btn-success' : 'btn-warning'
-
+                                className={`btn waves-effect waves-light btn-rounded ${workInfo.server_status === 'GOOD' ? 'btn-success' : 'btn-warning'
                                   }`}
                                 style={{ width: '100px' }}
                               >
@@ -239,9 +220,6 @@ function InspectionList({ checkPermission }) {
                       </tbody>
                     </table>
                   </div>
-
-
-                  {/* 페이지네이션 */}
 
                   <div className="pagedivengl pagination-engl">
                     <Pagination
