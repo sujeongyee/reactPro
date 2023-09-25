@@ -19,7 +19,6 @@ import BriefcaseIcon from "../img/BriefcaseIcon";
 import axios from "axios";
 
 function HeaderFooterEn(props) {
-  console.log(props);
   const [bellModal, setbellModalIsOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const ms = {
@@ -32,7 +31,17 @@ function HeaderFooterEn(props) {
     fontSize: '16px'
   }
   const navigate = useNavigate();
-
+  const [eng,setEng]=useState({});
+  const getEnInfo=async()=>{
+      console.log(props.checkPermission.sub)
+    const en_enid={"en_id":props.checkPermission.sub}
+    const response=await axios.post("/api/main/engineer/getEngineerInfo",en_enid)
+    setEng(response.data)
+    console.log(eng)
+  }
+  useEffect(()=>{
+    getEnInfo()
+  },[])
   const logout = () => {
     localStorage.removeItem("token");
     alert("로그아웃 되었습니다😎");
@@ -102,7 +111,7 @@ function HeaderFooterEn(props) {
           <nav className="navbar top-navbar navbar-expand-lg navbar-light">
             <div className="navbar-header">
               <div className="navbar-brand">
-                <a href="index.html"> 엔지니어1팀 </a>
+                <a href="index.html"> {eng.team_id} </a>
               </div>
 
 
@@ -160,7 +169,7 @@ function HeaderFooterEn(props) {
                      <img src="https://project-buket.s3.amazonaws.com/profile.jpg" alt="user" className="rounded-circle" width="50" height="50" />
                            <span className="ms-2 d-none d-lg-inline-block">
                                         <span></span>
-                                        <span className="text-dark" style={{ fontWeight: 700, fontSize: '15px' }}>{user_id}</span>
+                                        <span className="text-dark" style={{ fontWeight: 700, fontSize: '15px' }}>{eng.eng_enid}</span>
                                         <Down />
                                     </span>
                                 </button>
